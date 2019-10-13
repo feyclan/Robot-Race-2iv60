@@ -4,6 +4,7 @@ import static com.jogamp.opengl.GL2.*;
 import static robotrace.ShaderPrograms.*;
 import static robotrace.Textures.*;
 
+
 /**
  * Handles all of the RobotRace graphics functionality,
  * which should be extended per the assignment.
@@ -208,7 +209,7 @@ public class RobotRace extends Base {
         
 
     // Draw hierarchy example.
-        drawHierarchy();
+        //drawHierarchy(); //THIS LINE DRAWS THE EXAMPLE 'ARM' WITH 3 COMPONENTS
         
         // Draw the axis frame.
         if (gs.showAxes) {
@@ -238,14 +239,26 @@ public class RobotRace extends Base {
      * and origin (yellow).
      */
     public void drawAxisFrame() {
-
+        
+        drawArrow(new Vector(1,0,0), new Vector(1,0,0)); // x-axis, red
+        drawArrow(new Vector(0,1,0), new Vector(0,1,0)); // y-axis, green
+        drawArrow(new Vector(0,0,1), new Vector(0,0,1)); // z-axis, blue
+        drawOrigin();
     }
     
     /**
      * Draws a single arrow
      */
-    public void drawArrow() {  
-
+    public void drawArrow(Vector endPoint, Vector arrowColor ) {  
+        gl.glBegin(GL_LINES);
+        gl.glColor3d(arrowColor.x, arrowColor.y, arrowColor.z);
+        gl.glVertex3i(0, 0, 0);
+        gl.glVertex3d(endPoint.x, endPoint.y, endPoint.z);        
+        gl.glEnd();
+    }
+    
+    public void drawOrigin(){
+        
     }
  
     /**
