@@ -37,6 +37,14 @@ class Camera {
      * Computes eye, center, and up, based on the camera's default mode.
      */
     private void setDefaultMode(GlobalState gs) {
+        center = gs.cnt;
+        up = Vector.Z;
+        
+        eye = new Vector(0,0,0);
+        eye.x = Math.cos(gs.theta) * Math.sin(gs.phi) * gs.vDist;
+        eye.y = Math.sin(gs.theta) * Math.sin(gs.phi) * gs.vDist;
+        eye.z = Math.cos(gs.phi) * gs.vDist;
+        //eye.scale(gs.vDist); FOR SOME REASON THIS DOES NOT WORK?
         
     }
 
