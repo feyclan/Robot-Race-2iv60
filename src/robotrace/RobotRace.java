@@ -239,27 +239,41 @@ public class RobotRace extends Base {
      * and origin (yellow).
      */
     public void drawAxisFrame() {
-        
+        gl.glLineWidth(2.5f);
         drawArrow(new Vector(1,0,0), new Vector(1,0,0)); // x-axis, red
         drawArrow(new Vector(0,1,0), new Vector(0,1,0)); // y-axis, green
         drawArrow(new Vector(0,0,1), new Vector(0,0,1)); // z-axis, blue
-        drawOrigin();
+        
+        // yellow sphere in origin
+        gl.glColor3d(1, 1, 0); //yellow
+        glut.glutSolidSphere(0.1, 10, 10);
     }
     
-    /**
-     * Draws a single arrow
-     */
-    public void drawArrow(Vector endPoint, Vector arrowColor ) {  
+    // Draw a single arrow
+    public void drawArrow(Vector endPoint, Vector arrowColor ) { 
+        //base of the arrow
         gl.glBegin(GL_LINES);
         gl.glColor3d(arrowColor.x, arrowColor.y, arrowColor.z);
         gl.glVertex3i(0, 0, 0);
         gl.glVertex3d(endPoint.x, endPoint.y, endPoint.z);        
         gl.glEnd();
+        
+        //Adding the cone at the top
+        //Rotate and translate based on direction
+        gl.glPushMatrix();
+        if (endPoint.x == 1){
+            gl.glTranslated(1, 0, 0);
+            gl.glRotated(90, 0, 1, 0);
+        } else if (endPoint.y == 1){
+            gl.glTranslated(0, 1, 0);   
+            gl.glRotated(-90, 1, 0, 0);         
+        } else if (endPoint.z == 1){
+            gl.glTranslated(0, 0, 1);
+        }
+        glut.glutSolidCone(.05, .15, 10, 10);
+        gl.glPopMatrix();
     }
     
-    public void drawOrigin(){
-        
-    }
  
     /**
      * Drawing hierarchy example.
