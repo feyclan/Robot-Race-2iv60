@@ -52,6 +52,13 @@ class Robot {
         glut.glutSolidCube(1);
         gl.glTranslated(-4,0,0);
         glut.glutSolidCube(1);//arms
+        gl.glTranslated(2.75,0,-1.025);
+        gl.glScaled(1.3,1,1);
+        glut.glutSolidCube(1);
+        gl.glTranslated(-1.25, 0,0);
+        glut.glutSolidCube(1);//legs
+        //WAARDES LATEN KLOPPEN
+        
         gl.glPopMatrix();
     }
     
