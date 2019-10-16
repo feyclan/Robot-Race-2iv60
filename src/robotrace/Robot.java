@@ -31,15 +31,15 @@ class Robot {
     ) {
         this.material = material;
 
-        
     }
 
     /**
      * Draws this robot (as a {@code stickfigure} if specified).
      */
-    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim) {
+    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos) {
+        position.x = xPos; //weet niet of dit moet neem aan van wel?
         gl.glPushMatrix();        
-        gl.glTranslated(0,0,4.5);
+        gl.glTranslated(xPos,0,4.5);
         glut.glutSolidCube(1); //head
         drawTorso(gl, glu, glut);
         drawRightArm(gl, glu, glut);
