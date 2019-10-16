@@ -11,9 +11,9 @@ public enum Material {
      */
     GOLD (
             
-        new float[] {0, 0, 0, 1},
-        new float[] {0, 0, 0, 1},
-        0
+        new float[] {0, 0, 0, 1}, //diffuse
+        new float[] {0, 0, 0, 1}, //specular
+        0                         //shininess, high
 
     ),
 
@@ -49,7 +49,7 @@ public enum Material {
 
         new float[] {0, 0, 0, 1},
         new float[] {0, 0, 0, 1},
-        0
+        0   //low shininess
 
     );
 
