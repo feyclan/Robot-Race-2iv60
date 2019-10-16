@@ -40,12 +40,11 @@ class Robot {
     public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim) {
         gl.glPushMatrix();        
         gl.glTranslated(0,0,4.5);
-        glut.glutSolidCube(1);
+        glut.glutSolidCube(1); //head
         gl.glColor3d(0,0,0);
         gl.glTranslated(0,0,-1.5);
         gl.glScaled(1,1,2);
-        gl.glTranslated(0,0,0);
-        glut.glutSolidCube(1);
+        glut.glutSolidCube(1); //torso
         gl.glPopMatrix();
     }
     
