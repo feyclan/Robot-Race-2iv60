@@ -38,8 +38,19 @@ class Robot {
      * Draws this robot (as a {@code stickfigure} if specified).
      */
     public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim) {
+        gl.glPushMatrix();        
+        gl.glTranslated(0,0,4.5);
+        glut.glutSolidCube(1);
+        gl.glColor3d(0,0,0);
+        gl.glTranslated(0,0,-1.5);
+        gl.glScaled(1,1,2);
+        gl.glTranslated(0,0,0);
+        glut.glutSolidCube(1);
+        gl.glPopMatrix();
+    }
+    
+    public void niks(GL2 gl, GLU glu, GLUT glut){
         gl.glColor3d(0.5,0.5,0.5);
-        gl.glPushMatrix();
         gl.glTranslated(0,0,2.5);
         glut.glutSolidCube(1); // head
         gl.glColor3d(0.1,0.1,0.1);
@@ -58,9 +69,5 @@ class Robot {
         gl.glTranslated(-1.25, 0,0);
         glut.glutSolidCube(1);//legs
         //WAARDES LATEN KLOPPEN
-        
-        gl.glPopMatrix();
     }
-    
-    
 }
