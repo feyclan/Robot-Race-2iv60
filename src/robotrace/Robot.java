@@ -45,6 +45,16 @@ class Robot {
         gl.glTranslated(0,0,-1.5);
         gl.glScaled(1,1,2);
         glut.glutSolidCube(1); //torso
+        gl.glColor3d(0,0.3,0);
+        gl.glTranslated(0.75, 0, 0);
+        gl.glScaled(0.5,1,1);
+        glut.glutSolidCube(1); //first arm
+        gl.glTranslated(-3, 0, 0);
+        glut.glutSolidCube(1); // second arm
+        gl.glTranslated(1, 0, -1);
+        glut.glutSolidCube(1); //first leg
+        gl.glTranslated(1,0,0);
+        glut.glutSolidCube(1); //second leg
         gl.glPopMatrix();
     }
     
