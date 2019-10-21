@@ -21,5 +21,4 @@ public class ShaderPrograms {
         trackShader = new ShaderProgram(gl, glu, "shaderPrograms/Track/vertex.glsl", null, "shaderPrograms/Track/fragment.glsl");
         terrainShader = new ShaderProgram(gl, glu, "shaderPrograms/Terrain/vertex.glsl", null, "shaderPrograms/Terrain/fragment.glsl");
     }
-    //VOEG SHADERMAKER SHADERS TOE; VERANDER TEXTURE DINGEN
 }
