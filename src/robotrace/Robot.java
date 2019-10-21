@@ -39,13 +39,24 @@ class Robot {
     public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos) {
         position.x = xPos; //weet niet of dit moet neem aan van wel?
         gl.glPushMatrix();        
+        gl.glColor3d(1,1,0.4);
         gl.glTranslated(xPos,0,4.5);
         glut.glutSolidCube(1); //head
         drawTorso(gl, glu, glut);
         drawRightArm(gl, glu, glut);
-        drawLeftArm(gl, glu, glut);
-        drawLeftLeg(gl, glu, glut);
-        drawRightLeg(gl, glu, glut);
+        gl.glPopMatrix();
+        //********
+        gl.glPushMatrix();
+        drawLeftArm(gl, glu, glut, xPos); //own matrix as well
+        gl.glPopMatrix();
+        //********
+        gl.glPushMatrix();
+        drawLeftLeg(gl, glu, glut, xPos);
+        //drawRightLeg(gl, glu, glut);
+        gl.glPopMatrix();
+        //********
+        gl.glPushMatrix();
+        drawRightLeg(gl, glu, glut, xPos);
         gl.glPopMatrix();
     }
     
@@ -70,9 +81,12 @@ class Robot {
              
     }
     
-    public void drawLeftArm(GL2 gl, GLU glu, GLUT glut){
-        gl.glTranslated(-3, 0, 1);
-        glut.glutSolidCube(1); // second arm
+    public void drawLeftArm(GL2 gl, GLU glu, GLUT glut, float xPos){
+        /**gl.glTranslated(-3, 0, 1);
+        glut.glutSolidCube(1); // second arm **/
+        gl.glTranslated(-0.75+xPos,0,3.5);
+        gl.glScaled(0.5,1,1);
+        glut.glutSolidCube(1);
         drawLeftArm2(gl,glu,glut);
     }
     
@@ -82,9 +96,10 @@ class Robot {
              
     }
     
-    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut){
+    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos){
         gl.glColor3d(1,0,0.5);
-        gl.glTranslated(1, 0, -1);
+        gl.glTranslated(-0.25+xPos, 0, 1.5);
+        gl.glScaled(0.5,1,1);
         glut.glutSolidCube(1); //first leg
         drawLeftLeg2(gl,glu,glut);
     }
@@ -94,10 +109,12 @@ class Robot {
         glut.glutSolidCube(1);
     }
     
-    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut){
-        gl.glTranslated(1,0,1);
-        glut.glutSolidCube(1); //second leg
-        drawRightLeg2(gl,glu,glut);
+    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut,float xPos){
+        //gl.glColor3d(1,0,0.5);
+        gl.glTranslated(0.25+xPos, 0, 1.5);
+        gl.glScaled(0.5,1,1);
+        glut.glutSolidCube(1); 
+        drawLeftLeg2(gl,glu,glut);
     }
     
     public void drawRightLeg2(GL2 gl, GLU glu, GLUT glut){
