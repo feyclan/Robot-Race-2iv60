@@ -38,7 +38,7 @@ class Robot {
     /**
      * Draws this robot (as a {@code stickfigure} if specified).
      */
-    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos) {
+    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos, GlobalState gs) {
         position.x = xPos; //weet niet of dit moet neem aan van wel?
         gl.glPushMatrix();    
         //gl.glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, FloatBuffer.wrap(material.diffuse));
@@ -47,7 +47,7 @@ class Robot {
         gl.glTranslated(xPos,0,4.5);
         glut.glutSolidCube(1); //head
         drawTorso(gl, glu, glut);
-        drawRightArm(gl, glu, glut);
+        drawRightArm(gl, glu, glut, gs);
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
@@ -71,18 +71,23 @@ class Robot {
         glut.glutSolidCube(1); //torso
     }
     
-    public void drawRightArm(GL2 gl, GLU glu, GLUT glut){
+    public void drawRightArm(GL2 gl, GLU glu, GLUT glut, GlobalState gs){
         gl.glColor3d(0,0.3,0);
         gl.glTranslated(0.75, 0, 0.25);
         gl.glScaled(0.5,1,0.5);
+        gl.glRotated(gs.sliderA * -90.0, 1, 0, 0);
         glut.glutSolidCube(1); //first arm
-        drawRightArm2(gl, glu,glut);
+        drawRightArm2(gl, glu,glut, gs);
     }
     
-    public void drawRightArm2(GL2 gl, GLU glu, GLUT glut){
+    public void drawRightArm2(GL2 gl, GLU glu, GLUT glut, GlobalState gs){
         gl.glTranslated(0,0,-1);
+        gl.glTranslated(0,0,0.5);
+        gl.glRotated(gs.sliderB * -90.0, 1, 0, 0);  
+        gl.glTranslated(0,0,-0.5);
         glut.glutSolidCube(1);
-             
+        
+   
     }
     
     public void drawLeftArm(GL2 gl, GLU glu, GLUT glut, float xPos){

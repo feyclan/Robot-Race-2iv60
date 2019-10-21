@@ -219,8 +219,8 @@ public class RobotRace extends Base {
         // Draw the (first) robot.
         gl.glUseProgram(robotShader.getProgramID()); 
         
-        robots[0].draw(gl, glu, glut, 0,0);
-        robots[1].draw(gl, glu, glut, 0, 5);
+        robots[0].draw(gl, glu, glut, 0,0, gs);
+        robots[1].draw(gl, glu, glut, 0, 5, gs);
         
         
         // Draw the race track.
