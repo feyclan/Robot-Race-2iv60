@@ -35,9 +35,9 @@ public enum Material {
      */
     ORANGE (
             
-        new float[] {0, 0, 0, 1},
-        new float[] {0, 0, 0, 1},
-        0
+        new float[] {0.87f, 0.65f, 0.02f, 1},
+        new float[] {0.29f, 0.29f, 0.29f, 1},
+        4
 
     ),
 
@@ -47,7 +47,7 @@ public enum Material {
      */
     WOOD (
 
-        new float[] {0, 0, 0, 1},
+        new float[] {0.24f, 0.16f, 0.09f, 1},
         new float[] {0, 0, 0, 1},
         0   //low shininess
 
