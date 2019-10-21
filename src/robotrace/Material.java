@@ -11,9 +11,9 @@ public enum Material {
      */
     GOLD (
             
-        new float[] {0, 0, 0, 1}, //diffuse
-        new float[] {0, 0, 0, 1}, //specular
-        0                         //shininess, high
+        new float[] {0.59f, 0.58f, 0.35f, 1}, //diffuse
+        new float[] {0.71f, 0.71f, 0.71f, 1}, //specular
+        10                         //shininess, high
 
     ),
 
@@ -23,9 +23,9 @@ public enum Material {
      */
     SILVER (
             
-        new float[] {0, 0, 0, 1},
-        new float[] {0, 0, 0, 1},
-        0
+        new float[] {0.07f, 0.07f, 0.07f, 1},
+        new float[] {0.26f, 0.26f, 0.26f, 1},
+        11
 
     ),
 
