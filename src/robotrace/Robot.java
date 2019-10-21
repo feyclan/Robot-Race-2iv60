@@ -58,23 +58,50 @@ class Robot {
     
     public void drawRightArm(GL2 gl, GLU glu, GLUT glut){
         gl.glColor3d(0,0.3,0);
-        gl.glTranslated(0.75, 0, 0);
-        gl.glScaled(0.5,1,1);
+        gl.glTranslated(0.75, 0, 0.25);
+        gl.glScaled(0.5,1,0.5);
         glut.glutSolidCube(1); //first arm
+        drawRightArm2(gl, glu,glut);
+    }
+    
+    public void drawRightArm2(GL2 gl, GLU glu, GLUT glut){
+        gl.glTranslated(0,0,-0.5);
+        glut.glutSolidCube(1);
+             
     }
     
     public void drawLeftArm(GL2 gl, GLU glu, GLUT glut){
-        gl.glTranslated(-3, 0, 0);
+        gl.glTranslated(-3, 0, 0.5);
         glut.glutSolidCube(1); // second arm
+        drawLeftArm2(gl,glu,glut);
+    }
+    
+    public void drawLeftArm2(GL2 gl, GLU glu, GLUT glut){
+        gl.glTranslated(0,0,-0.5);
+        glut.glutSolidCube(1);
+             
     }
     
     public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut){
-        gl.glTranslated(1, 0, -1);
+        gl.glColor3d(1,0,0.5);
+        gl.glTranslated(1, 0, -1.5);
         glut.glutSolidCube(1); //first leg
+        drawLeftLeg2(gl,glu,glut);
+    }
+    
+    public void drawLeftLeg2(GL2 gl, GLU glu, GLUT glut){
+        gl.glTranslated(0,0,-0.5);
+        glut.glutSolidCube(1);
     }
     
     public void drawRightLeg(GL2 gl, GLU glu, GLUT glut){
-        gl.glTranslated(1,0,0);
+        gl.glTranslated(1,0,0.5);
         glut.glutSolidCube(1); //second leg
+        drawRightLeg2(gl,glu,glut);
+    }
+    
+    public void drawRightLeg2(GL2 gl, GLU glu, GLUT glut){
+        gl.glTranslated(0,0,-0.5);
+        glut.glutSolidCube(1);
     }
 }
