@@ -77,17 +77,27 @@ class Robot {
         gl.glScaled(0.5,1,0.5);
         gl.glRotated(-90.0 * Math.sin(tAnim), 1, 0, 0);
         glut.glutSolidCube(1); //first arm
-        drawRightArm2(gl, glu,glut, gs);
+        drawRightArm2(gl, glu,glut, gs, tAnim);
     }
     
-    public void drawRightArm2(GL2 gl, GLU glu, GLUT glut, GlobalState gs){
+    public void drawRightArm2(GL2 gl, GLU glu, GLUT glut, GlobalState gs, float tAnim){
         gl.glTranslated(0,0,-1);
         gl.glTranslated(0,0,0.5);
-        gl.glRotated(gs.sliderB * -90.0, 1, 0, 0);  
+        //gl.glRotated(gs.sliderB * -90.0, 1, 0, 0);  
+        gl.glRotated(rotAngle(tAnim), 1, 0, 0);
         gl.glTranslated(0,0,-0.5);
         glut.glutSolidCube(1);
         
    
+    }
+    
+    public double rotAngle(float tAnim){
+        double t = Math.sin(tAnim);
+        if(t<0){
+            return 0;
+        } else{
+            return t*-90;
+        }
     }
     
     public void drawLeftArm(GL2 gl, GLU glu, GLUT glut, float xPos, float tAnim){
@@ -97,13 +107,25 @@ class Robot {
         gl.glScaled(0.5,1,1);
         gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);
         glut.glutSolidCube(1);
-        drawLeftArm2(gl,glu,glut);
+        drawLeftArm2(gl,glu,glut, tAnim);
     }
     
-    public void drawLeftArm2(GL2 gl, GLU glu, GLUT glut){
+    public void drawLeftArm2(GL2 gl, GLU glu, GLUT glut, float tAnim){
         gl.glTranslated(0,0,-1);
+        gl.glTranslated(0,0,0.5);
+        gl.glRotated(rotAngle2(tAnim), 1, 0, 0);
+        gl.glTranslated(0,0,-0.5);
         glut.glutSolidCube(1);
              
+    }
+    
+    public double rotAngle2(float tAnim){
+        double t = Math.sin(tAnim);
+        if(t>0){
+            return 0;
+        } else{
+            return t*90;
+        }
     }
     
     public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos){
