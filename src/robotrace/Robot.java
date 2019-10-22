@@ -47,7 +47,7 @@ class Robot {
         gl.glTranslated(xPos,0,4.5);
         glut.glutSolidCube(1); //head
         drawTorso(gl, glu, glut);
-        drawRightArm(gl, glu, glut, gs);
+        drawRightArm(gl, glu, glut, gs, tAnim);
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
@@ -71,11 +71,11 @@ class Robot {
         glut.glutSolidCube(1); //torso
     }
     
-    public void drawRightArm(GL2 gl, GLU glu, GLUT glut, GlobalState gs){
+    public void drawRightArm(GL2 gl, GLU glu, GLUT glut, GlobalState gs, float tAnim){
         gl.glColor3d(0,0.3,0);
         gl.glTranslated(0.75, 0, 0.25);
         gl.glScaled(0.5,1,0.5);
-        gl.glRotated(gs.sliderA * -90.0, 1, 0, 0);
+        gl.glRotated(-90.0 * Math.sin(tAnim), 1, 0, 0);
         glut.glutSolidCube(1); //first arm
         drawRightArm2(gl, glu,glut, gs);
     }
