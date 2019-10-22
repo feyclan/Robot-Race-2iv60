@@ -8,6 +8,8 @@ import static com.jogamp.opengl.GL2ES3.GL_QUADS;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.*;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
+//import static robotrace.ShaderPrograms.robotShader;
+
 
 /**
 * Represents a Robot, to be implemented according to the Assignments.
@@ -41,8 +43,9 @@ class Robot {
     public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos, GlobalState gs) {
         position.x = xPos; //weet niet of dit moet neem aan van wel?
         gl.glPushMatrix();    
-        //gl.glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, FloatBuffer.wrap(material.diffuse));
-
+        gl.glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, FloatBuffer.wrap(material.diffuse));
+        gl.glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, FloatBuffer.wrap(material.specular));
+        gl.glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, material.shininess); //werkt niet :/
         gl.glColor3d(1,1,0.4);
         gl.glTranslated(xPos,0,4.5);
         glut.glutSolidCube(1); //head
