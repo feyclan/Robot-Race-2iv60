@@ -55,12 +55,12 @@ class Robot {
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawLeftLeg(gl, glu, glut, xPos);
+        drawLeftLeg(gl, glu, glut, xPos, tAnim);
         //drawRightLeg(gl, glu, glut);
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawRightLeg(gl, glu, glut, xPos);
+        drawRightLeg(gl, glu, glut, xPos, tAnim);
         gl.glPopMatrix();
     }
     
@@ -85,7 +85,7 @@ class Robot {
         gl.glTranslated(0,0,0.5);
         //gl.glRotated(gs.sliderB * -90.0, 1, 0, 0);  
         gl.glRotated(rotAngle(tAnim), 1, 0, 0);
-        gl.glTranslated(0,0,-0.5);
+        gl.glTranslated(0,0,-0.5); //rotation around the upper arm, hence translation
         glut.glutSolidCube(1);
         
    
@@ -128,25 +128,31 @@ class Robot {
         }
     }
     
-    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos){
+    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float tAnim){
         gl.glColor3d(1,0,0.5);
         gl.glTranslated(-0.25+xPos, 0, 1.5);
         gl.glScaled(0.5,1,1);
+        gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
+        gl.glRotated(-90.0 * Math.sin(tAnim), 1, 0, 0);
+        gl.glTranslated(0,-0.25,-0.25); //optioneel, comment maken als zonder beter uitziet
         glut.glutSolidCube(1); //first leg
-        drawLeftLeg2(gl,glu,glut);
+        drawLeftLeg2(gl,glu,glut,tAnim);
     }
     
-    public void drawLeftLeg2(GL2 gl, GLU glu, GLUT glut){
+    public void drawLeftLeg2(GL2 gl, GLU glu, GLUT glut, float tAnim){
         gl.glTranslated(0,0,-1);
         glut.glutSolidCube(1);
     }
     
-    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut,float xPos){
+    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut,float xPos, float tAnim){
         //gl.glColor3d(1,0,0.5);
         gl.glTranslated(0.25+xPos, 0, 1.5);
         gl.glScaled(0.5,1,1);
+        gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
+        gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);
+        gl.glTranslated(0,-0.25,-0.25); //optioneel, comment maken als zonder beter uitziet
         glut.glutSolidCube(1); 
-        drawLeftLeg2(gl,glu,glut);
+        drawRightLeg2(gl,glu,glut);
     }
     
     public void drawRightLeg2(GL2 gl, GLU glu, GLUT glut){
