@@ -28,14 +28,14 @@ abstract class RaceTrack {
      * Draws this track, based on the control points.
      */
     public void draw(GL2 gl, GLU glu, GLUT glut) {
-        double stepAmount = 100;
+        double stepAmount = 50;
         //first collect the sets of points. 
         //5 arrays will store the points used to create 4 tracks between them
         Vector[] pointsA = new Vector[(int)stepAmount]; //closest set to the origin
         Vector[] pointsB = new Vector[(int)stepAmount];
         Vector[] pointsC = new Vector[(int)stepAmount]; //middle set, exactly on P(t)
         Vector[] pointsD = new Vector[(int)stepAmount];
-        Vector[] pointsE = new Vector[(int)stepAmount]; //furthest set from the origin 
+        Vector[] pointsE = new Vector[(int)stepAmount]; //furthest set from the origin         
         
         //fill in the points
         for (double i = 0.0; i < stepAmount; i++){
@@ -50,6 +50,14 @@ abstract class RaceTrack {
             pointsE[(int)i] = point.add(toOrigin.scale(2*laneWidth));
         }
         
+        //storing the points together allows a cleaner code by using a for-loop later
+        Vector[][] points = new Vector[5][];
+        points[0] = pointsA;
+        points[1] = pointsB;
+        points[2] = pointsC;
+        points[3] = pointsD;
+        points[4] = pointsE;
+        
         //each lane gets its own color
         Vector[] laneColors = new Vector[4];
         laneColors[0] = new Vector(0,0,1); //blue
@@ -58,62 +66,76 @@ abstract class RaceTrack {
         laneColors[3] = new Vector(1,0,0); //red
         
         //draw quads between the points to form the lanes   
+        //[i] = the point along P(i); [l] = the lane number
         for (int i = 0; i < (stepAmount-1); i++){
-            gl.glBegin(GL_QUAD_STRIP);
-            gl.glColor3d(laneColors[0].x, laneColors[0].y, laneColors[0].z);
-            gl.glVertex3d(pointsA[i].x, pointsA[i].y, pointsA[i].z);
-            gl.glVertex3d(pointsA[i+1].x, pointsA[i+1].y, pointsA[i+1].z); //inner edge
-            gl.glVertex3d(pointsB[i].x, pointsB[i].y, pointsB[i].z);
-            gl.glVertex3d(pointsB[i+1].x, pointsB[i+1].y, pointsB[i+1].z); //lane 1
-            
-            gl.glColor3d(laneColors[1].x, laneColors[1].y, laneColors[1].z);
-            gl.glVertex3d(pointsC[i].x, pointsC[i].y, pointsC[i].z);
-            gl.glVertex3d(pointsC[i+1].x, pointsC[i+1].y, pointsC[i+1].z); //lane 2   
-            
-            gl.glColor3d(laneColors[2].x, laneColors[2].y, laneColors[2].z);
-            gl.glVertex3d(pointsD[i].x, pointsD[i].y, pointsD[i].z);
-            gl.glVertex3d(pointsD[i+1].x, pointsD[i+1].y, pointsD[i+1].z); //lane 3
-            
-            gl.glColor3d(laneColors[3].x, laneColors[3].y, laneColors[3].z);
-            gl.glVertex3d(pointsE[i].x, pointsE[i].y, pointsE[i].z);
-            gl.glVertex3d(pointsE[i+1].x, pointsE[i+1].y, pointsE[i+1].z); //lane 4
-            gl.glEnd();
-            
+            for (int l = 0; l < 4; l++){
+                gl.glBegin(GL_QUADS); //decided against using GL_QUAD_STRIPS, as this interpolates the color between vertices
+                gl.glColor3d(laneColors[l].x, laneColors[l].y, laneColors[l].z);            //select Color
+                
+                gl.glVertex3d(points[l][i+1].x, points[l][i+1].y, points[l][i+1].z);        //top left
+                gl.glVertex3d(points[l+1][i+1].x, points[l+1][i+1].y, points[l+1][i+1].z);  //top right
+                gl.glVertex3d(points[l+1][i].x, points[l+1][i].y, points[l+1][i].z);        //bottom right
+                gl.glVertex3d(points[l][i].x, points[l][i].y, points[l][i].z);              //bottom left
+                gl.glEnd();            
+            }          
         }   
-        //the final step of drawing requires connecting points [stepAmount] to points[0] (not possible with loop)
+        //the final strip requires connecting points[stepAmount-1] to points[0] (not possible with loop) 
+        for (int l = 0; l < 4; l++){
+            gl.glBegin(GL_QUADS);          
+            gl.glColor3d(laneColors[l].x, laneColors[l].y, laneColors[l].z);
+            
+            gl.glVertex3d(points[l][0].x, points[l][0].y, points[l][0].z); 
+            gl.glVertex3d(points[l+1][0].x, points[l+1][0].y, points[l+1][0].z);      
+            gl.glVertex3d(points[l+1][(int)stepAmount-1].x, points[l+1][(int)stepAmount-1].y, points[l+1][(int)stepAmount-1].z);
+            gl.glVertex3d(points[l][(int)stepAmount-1].x, points[l][(int)stepAmount-1].y, points[l][(int)stepAmount-1].z);
+            gl.glEnd();         
+        }
+        
+        //drawing lines between the lanes makes them more distinguishable
+        //[pts] = set of points;; [p] = point in set
+        for (int n = 0; n < 5; n++){
+            Vector[] pts = points[n];
+            gl.glBegin(GL_LINE_LOOP);
+            gl.glColor3f(0, 0, 0);
+            gl.glLineWidth(5.0f);
+            gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z); //starting point
+            for (Vector p : pts){
+                gl.glVertex3d(p.x, p.y, p.z); 
+            }
+            gl.glEnd();
+        }
+        
+        //finally the sides should be drawn
+        //inner side:
+        gl.glColor3d(189.0/255.0, 140.0/255.0, 43.0/255.0);
         gl.glBegin(GL_QUAD_STRIP);
-        gl.glVertex3d(pointsA[(int)stepAmount-1].x, pointsA[(int)stepAmount-1].y, pointsA[(int)stepAmount-1].z);
-        gl.glVertex3d(pointsA[0].x, pointsA[0].y, pointsA[0].z); //inner edge
-        gl.glVertex3d(pointsB[(int)stepAmount-1].x, pointsB[(int)stepAmount-1].y, pointsB[(int)stepAmount-1].z);
-        gl.glVertex3d(pointsB[0].x, pointsB[0].y, pointsB[0].z); //lane 1
-        gl.glVertex3d(pointsC[(int)stepAmount-1].x, pointsC[(int)stepAmount-1].y, pointsC[(int)stepAmount-1].z);
-        gl.glVertex3d(pointsC[0].x, pointsC[0].y, pointsC[0].z); //lane 2            
-        gl.glVertex3d(pointsD[(int)stepAmount-1].x, pointsD[(int)stepAmount-1].y, pointsD[(int)stepAmount-1].z);
-        gl.glVertex3d(pointsD[0].x, pointsD[0].y, pointsD[0].z); //lane 3
-        gl.glVertex3d(pointsE[(int)stepAmount-1].x, pointsE[(int)stepAmount-1].y, pointsE[(int)stepAmount-1].z);
-        gl.glVertex3d(pointsE[0].x, pointsE[0].y, pointsE[0].z); //lane 4
+        for (Vector p : pointsA){
+            Vector lowP = p.subtract(new Vector(0.0,0.0,2.0));
+            gl.glVertex3d(lowP.x, lowP.y, lowP.z);
+            gl.glVertex3d(p.x, p.y, p.z);
+            
+        }
+        //final quad
+        Vector P = pointsA[0];
+        Vector lowp = P.subtract(new Vector(0.0,0.0,2.0));
+        gl.glVertex3d(lowp.x, lowp.y, lowp.z);
+        gl.glVertex3d(P.x, P.y, P.z);
         gl.glEnd();
         
-        
-        
-        /*
-        gl.glPushMatrix();
-             
-        gl.glBegin(GL_LINE_LOOP);
-        gl.glColor3f(0, 0, 0);
-        gl.glLineWidth(2.5f);
-        
-        double stepSize = 1.0/stepAmount;    
-        for (double i = 0.0; i <= 1.0; i += stepSize){
-            Vector point = getPoint(i);
-            gl.glVertex3d(point.x,point.y,point.z);
-            System.out.println(i);
-        }            
+        //outer side:
+        gl.glBegin(GL_QUAD_STRIP);
+        for (Vector p : pointsE){
+            Vector lowP = p.subtract(new Vector(0.0,0.0,2.0));
+            gl.glVertex3d(lowP.x, lowP.y, lowP.z);
+            gl.glVertex3d(p.x, p.y, p.z);
+            
+        }
+        //final quad
+        Vector p = pointsE[0];
+        Vector lowP = p.subtract(new Vector(0.0,0.0,2.0));
+        gl.glVertex3d(lowP.x, lowP.y, lowP.z);
+        gl.glVertex3d(p.x, p.y, p.z);
         gl.glEnd();
-        
-        
-        gl.glPopMatrix(); 
-        */
         
         
     }
