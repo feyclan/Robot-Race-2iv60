@@ -41,13 +41,13 @@ abstract class RaceTrack {
         for (double i = 0.0; i < stepAmount; i++){
             double t = 1.0/stepAmount * i;
             Vector point = getPoint(t);
-            Vector toOrigin = getTangent(t).cross(Vector.Z).normalized(); // vector pointing from point to origin (calculated as normal to tangent)
+            Vector fromOrigin = getTangent(t).cross(Vector.Z).normalized(); // direction-vector pointing from origin to point (calculated as normal to tangent)
             
-            pointsA[(int)i] = point.subtract(toOrigin.scale(2*laneWidth));
-            pointsB[(int)i] = point.subtract(toOrigin.scale(laneWidth));
+            pointsA[(int)i] = point.subtract(fromOrigin.scale(2*laneWidth));
+            pointsB[(int)i] = point.subtract(fromOrigin.scale(laneWidth));
             pointsC[(int)i] = point;
-            pointsD[(int)i] = point.add(toOrigin.scale(laneWidth));
-            pointsE[(int)i] = point.add(toOrigin.scale(2*laneWidth));
+            pointsD[(int)i] = point.add(fromOrigin.scale(laneWidth));
+            pointsE[(int)i] = point.add(fromOrigin.scale(2*laneWidth));
         }
         
         //storing the points together allows a cleaner code by using a for-loop later
@@ -145,9 +145,12 @@ abstract class RaceTrack {
      * Use this method to find the position of a robot on the track.
      */
     public Vector getLanePoint(int lane, double t){
-
-        return Vector.O;
-
+        
+        Vector trackCenter = getPoint(t);
+        Vector fromOrigin = getTangent(t).cross(Vector.Z).normalized(); // direction-vector pointing from origin to point (calculated as normal to tangent)
+        Vector baseLane = trackCenter.subtract(fromOrigin.scale(2.5*laneWidth));
+        Vector result = baseLane.add(fromOrigin.scale(lane*laneWidth));
+        return result;
     }
     
     /**
@@ -155,9 +158,8 @@ abstract class RaceTrack {
      * Use this method to find the orientation of a robot on the track.
      */
     public Vector getLaneTangent(int lane, double t){
-        
-        return Vector.O;
-
+        //!NOT FINISHED!
+        return getTangent(t);
     }
     
     

@@ -40,30 +40,31 @@ class Robot {
     /**
      * Draws this robot (as a {@code stickfigure} if specified).
      */
-    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos, GlobalState gs) {
-        position.x = xPos; //weet niet of dit moet neem aan van wel?
+    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos, float yPos, GlobalState gs) {
+        position.x = xPos; 
+        position.y = yPos;
         gl.glPushMatrix();    
         gl.glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, FloatBuffer.wrap(material.diffuse));
         gl.glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, FloatBuffer.wrap(material.specular));
         gl.glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, material.shininess); //werkt niet :/
         gl.glColor3d(1,1,0.4);
-        gl.glTranslated(xPos,0,4.5);
+        gl.glTranslated(xPos,yPos,4.5);
         glut.glutSolidCube(1); //head
         drawTorso(gl, glu, glut);
         drawRightArm(gl, glu, glut, gs, tAnim);
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawLeftArm(gl, glu, glut, xPos, tAnim); //own matrix as well
+        drawLeftArm(gl, glu, glut, xPos, yPos, tAnim); //own matrix as well
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawLeftLeg(gl, glu, glut, xPos, tAnim);
+        drawLeftLeg(gl, glu, glut, xPos, yPos, tAnim);
         //drawRightLeg(gl, glu, glut);
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawRightLeg(gl, glu, glut, xPos, tAnim);
+        drawRightLeg(gl, glu, glut, xPos, yPos, tAnim);
         gl.glPopMatrix();
     }
     
@@ -103,10 +104,10 @@ class Robot {
         }
     }
     
-    public void drawLeftArm(GL2 gl, GLU glu, GLUT glut, float xPos, float tAnim){
+    public void drawLeftArm(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, float tAnim){
         /**gl.glTranslated(-3, 0, 1);
         glut.glutSolidCube(1); // second arm **/
-        gl.glTranslated(-0.75+xPos,0,3.5);
+        gl.glTranslated(-0.75+xPos,yPos,3.5);
         gl.glScaled(0.5,1,1);
         gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);
         glut.glutSolidCube(1);
@@ -131,9 +132,9 @@ class Robot {
         }
     }
     
-    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float tAnim){
+    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, float tAnim){
         gl.glColor3d(1,0,0.5);
-        gl.glTranslated(-0.25+xPos, 0, 1.5);
+        gl.glTranslated(-0.25+xPos, yPos, 1.5);
         gl.glScaled(0.5,1,1);
         gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
         gl.glRotated(-90.0 * Math.sin(tAnim), 1, 0, 0);
@@ -147,9 +148,9 @@ class Robot {
         glut.glutSolidCube(1);
     }
     
-    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut,float xPos, float tAnim){
+    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, float tAnim){
         //gl.glColor3d(1,0,0.5);
-        gl.glTranslated(0.25+xPos, 0, 1.5);
+        gl.glTranslated(0.25+xPos, yPos, 1.5);
         gl.glScaled(0.5,1,1);
         gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
         gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);

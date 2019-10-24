@@ -218,9 +218,12 @@ public class RobotRace extends Base {
         
         // Draw the (first) robot.
         gl.glUseProgram(robotShader.getProgramID()); 
-        
-        robots[0].draw(gl, glu, glut, gs.tAnim,0, gs);
-        robots[1].draw(gl, glu, glut, gs.tAnim, 5, gs);
+        double speedScale = 0.15;
+        double speed = gs.tAnim * speedScale;
+        robots[0].draw(gl, glu, glut, gs.tAnim, (float) raceTracks[gs.trackNr].getLanePoint(1, speed).x, (float) raceTracks[gs.trackNr].getLanePoint(1, speed).y, gs);
+        //robots[1].draw(gl, glu, glut, gs.tAnim, 5, gs);
+        //robots[2].draw(gl, glu, glut, gs.tAnim, 10, gs);
+        //robots[3].draw(gl, glu, glut, gs.tAnim, 20, gs);
         
         
         // Draw the race track.
