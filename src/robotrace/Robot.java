@@ -44,7 +44,7 @@ class Robot {
         //calculate the position P(t) through lane, speed and time
         float xPos = (float) track.getLanePoint(lane, speed * tAnim).x;
         float yPos = (float) track.getLanePoint(lane, speed * tAnim).y;
-        float angle = 45;
+        double angle = computeAngle(track, tAnim, lane, speed);
         
         position.x = xPos; 
         position.y = yPos;
@@ -61,19 +61,33 @@ class Robot {
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawLeftArm(gl, glu, glut, xPos, yPos, tAnim); //own matrix as well
+        drawLeftArm(gl, glu, glut, xPos, yPos, angle, tAnim); //own matrix as well
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawLeftLeg(gl, glu, glut, xPos, yPos, tAnim);
+        drawLeftLeg(gl, glu, glut, xPos, yPos, angle, tAnim);
         //drawRightLeg(gl, glu, glut);
         gl.glPopMatrix();
         //********
         gl.glPushMatrix();
-        drawRightLeg(gl, glu, glut, xPos, yPos, tAnim);
+        drawRightLeg(gl, glu, glut, xPos, yPos, angle, tAnim);
         gl.glPopMatrix();
     }
     
+    //compute the angle between the tangent and the y-axis
+    public double computeAngle(RaceTrack track, float tAnim, int lane, double speed){
+        Vector t = track.getLaneTangent(lane, speed * tAnim);
+        Vector y = new Vector(0,1,0);
+        if (t.x > 0){y = new Vector(0,-1,0);}
+        //formula: arccos( (y dot t)/(y.length * t.length) )
+        double dot = y.dot(t);
+        double len = y.length() * t.length();
+        
+        double angleRad = Math.acos(dot/len);
+        double angleDeg = angleRad * 180/Math.PI;
+        if (t.x < 0){angleDeg += 180;}
+        return angleDeg;
+    }
     
     public void drawTorso(GL2 gl, GLU glu, GLUT glut){
         gl.glColor3d(0,0,0);
@@ -111,10 +125,13 @@ class Robot {
         }
     }
     
-    public void drawLeftArm(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, float tAnim){
+    public void drawLeftArm(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, double angle, float tAnim){
         /**gl.glTranslated(-3, 0, 1);
         glut.glutSolidCube(1); // second arm **/
-        gl.glTranslated(-0.75+xPos,yPos,3.5);
+        gl.glColor3d(0,0.3,0);
+        gl.glTranslated(xPos,yPos,0);
+        gl.glRotated(angle,0,0,1);
+        gl.glTranslated(-0.75,0,3.5);
         gl.glScaled(0.5,1,1);
         gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);
         glut.glutSolidCube(1);
@@ -139,9 +156,11 @@ class Robot {
         }
     }
     
-    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, float tAnim){
+    public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, double angle, float tAnim){
         gl.glColor3d(1,0,0.5);
-        gl.glTranslated(-0.25+xPos, yPos, 1.5);
+        gl.glTranslated(xPos, yPos, 0);
+        gl.glRotated(angle,0,0,1);
+        gl.glTranslated(-0.25, 0, 1.5);        
         gl.glScaled(0.5,1,1);
         gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
         gl.glRotated(-90.0 * Math.sin(tAnim), 1, 0, 0);
@@ -155,9 +174,11 @@ class Robot {
         glut.glutSolidCube(1);
     }
     
-    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, float tAnim){
+    public void drawRightLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, double angle, float tAnim){
         //gl.glColor3d(1,0,0.5);
-        gl.glTranslated(0.25+xPos, yPos, 1.5);
+        gl.glTranslated(xPos, yPos, 0);
+        gl.glRotated(angle,0,0,1);
+        gl.glTranslated(0.25, 0, 1.5);        
         gl.glScaled(0.5,1,1);
         gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
         gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);

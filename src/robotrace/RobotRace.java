@@ -224,7 +224,6 @@ public class RobotRace extends Base {
         //robots[2].draw(gl, glu, glut, gs.tAnim, raceTracks[gs.trackNr], 3, 0.18, gs);
         //robots[3].draw(gl, glu, glut, gs.tAnim, raceTracks[gs.trackNr], 4, 0.25, gs);
         
-        
         // Draw the race track.
         gl.glUseProgram(trackShader.getProgramID());
         raceTracks[gs.trackNr].draw(gl, glu, glut);
