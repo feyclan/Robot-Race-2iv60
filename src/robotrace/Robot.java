@@ -40,7 +40,12 @@ class Robot {
     /**
      * Draws this robot (as a {@code stickfigure} if specified).
      */
-    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, float xPos, float yPos, GlobalState gs) {
+    public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, RaceTrack track, int lane, double speed, GlobalState gs) {
+        //calculate the position P(t) through lane, speed and time
+        float xPos = (float) track.getLanePoint(lane, speed * tAnim).x;
+        float yPos = (float) track.getLanePoint(lane, speed * tAnim).y;
+        float angle = 45;
+        
         position.x = xPos; 
         position.y = yPos;
         gl.glPushMatrix();    
@@ -49,6 +54,7 @@ class Robot {
         gl.glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, material.shininess); //werkt niet :/
         gl.glColor3d(1,1,0.4);
         gl.glTranslated(xPos,yPos,4.5);
+        gl.glRotated(angle,0,0,1);
         glut.glutSolidCube(1); //head
         drawTorso(gl, glu, glut);
         drawRightArm(gl, glu, glut, gs, tAnim);
@@ -67,6 +73,7 @@ class Robot {
         drawRightLeg(gl, glu, glut, xPos, yPos, tAnim);
         gl.glPopMatrix();
     }
+    
     
     public void drawTorso(GL2 gl, GLU glu, GLUT glut){
         gl.glColor3d(0,0,0);
