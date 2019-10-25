@@ -42,8 +42,9 @@ class Robot {
      */
     public void draw(GL2 gl, GLU glu, GLUT glut, float tAnim, RaceTrack track, int lane, double speed, GlobalState gs) {
         //calculate the position P(t) through lane, speed and time
-        float xPos = (float) track.getLanePoint(lane, speed * tAnim).x;
-        float yPos = (float) track.getLanePoint(lane, speed * tAnim).y;
+        double extraSpeed = varySpeed(speed, tAnim); //varying speed to 'make race more interesting'
+        float xPos = (float) track.getLanePoint(lane, (speed * tAnim)+extraSpeed).x;
+        float yPos = (float) track.getLanePoint(lane, (speed * tAnim)+extraSpeed).y;
         double angle = computeAngle(track, tAnim, lane, speed);
         
         position.x = xPos; 
@@ -53,7 +54,8 @@ class Robot {
         gl.glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR, FloatBuffer.wrap(material.specular));
         gl.glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS, material.shininess); //werkt niet :/
         gl.glColor3d(1,1,0.4);
-        gl.glTranslated(xPos,yPos,4.5);
+        gl.glTranslated(xPos,yPos,3.0);
+        gl.glScaled(0.5, 0.5, 0.5);
         gl.glRotated(angle,0,0,1);
         glut.glutSolidCube(1); //head
         drawTorso(gl, glu, glut);
@@ -87,6 +89,13 @@ class Robot {
         double angleDeg = angleRad * 180/Math.PI;
         if (t.x < 0){angleDeg += 180;}
         return angleDeg;
+    }
+    
+    //function slightly increases or decreases the speed at which the robots run
+    public double varySpeed(double normSpeed, float tAnim){
+        double variance = 0.2*normSpeed;
+        double deltaSpeed = Math.sin(tAnim) * variance;
+        return deltaSpeed;
     }
     
     public void drawTorso(GL2 gl, GLU glu, GLUT glut){
@@ -130,8 +139,9 @@ class Robot {
         glut.glutSolidCube(1); // second arm **/
         gl.glColor3d(0,0.3,0);
         gl.glTranslated(xPos,yPos,0);
+        gl.glScaled(0.5, 0.5, 0.5);
         gl.glRotated(angle,0,0,1);
-        gl.glTranslated(-0.75,0,3.5);
+        gl.glTranslated(-0.75,0,5.0);
         gl.glScaled(0.5,1,1);
         gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);
         glut.glutSolidCube(1);
@@ -159,8 +169,9 @@ class Robot {
     public void drawLeftLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, double angle, float tAnim){
         gl.glColor3d(1,0,0.5);
         gl.glTranslated(xPos, yPos, 0);
+        gl.glScaled(0.5, 0.5, 0.5);
         gl.glRotated(angle,0,0,1);
-        gl.glTranslated(-0.25, 0, 1.5);        
+        gl.glTranslated(-0.25, 0, 3.0);        
         gl.glScaled(0.5,1,1);
         gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
         gl.glRotated(-90.0 * Math.sin(tAnim), 1, 0, 0);
@@ -177,8 +188,9 @@ class Robot {
     public void drawRightLeg(GL2 gl, GLU glu, GLUT glut, float xPos, float yPos, double angle, float tAnim){
         //gl.glColor3d(1,0,0.5);
         gl.glTranslated(xPos, yPos, 0);
+        gl.glScaled(0.5, 0.5, 0.5);
         gl.glRotated(angle,0,0,1);
-        gl.glTranslated(0.25, 0, 1.5);        
+        gl.glTranslated(0.25, 0, 3.0);        
         gl.glScaled(0.5,1,1);
         gl.glTranslated(0,0.25,0.25); //optioneel, comment maken als zonder beter uitziet
         gl.glRotated(90.0 * Math.sin(tAnim), 1, 0, 0);
