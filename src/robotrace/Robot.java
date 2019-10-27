@@ -92,9 +92,12 @@ class Robot {
     }
     
     //function slightly increases or decreases the speed at which the robots run
+    double rand = Math.random();
     public double varySpeed(double normSpeed, float tAnim){
         double variance = 0.2*normSpeed;
-        double deltaSpeed = Math.sin(tAnim) * variance;
+        System.out.println(rand);
+        double t = tAnim + rand;
+        double deltaSpeed = Math.sin(t) * variance;
         return deltaSpeed;
     }
     
