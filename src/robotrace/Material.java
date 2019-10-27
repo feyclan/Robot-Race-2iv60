@@ -23,8 +23,8 @@ public enum Material {
      */
     SILVER (
             
-        new float[] {0.07f, 0.07f, 0.07f, 1},
-        new float[] {0.26f, 0.26f, 0.26f, 1},
+        new float[] {0.40f, 0.40f, 0.40f, 1},
+        new float[] {0.80f, 0.80f, 0.80f, 1},
         11
 
     ),
@@ -35,9 +35,9 @@ public enum Material {
      */
     ORANGE (
             
-        new float[] {0.87f, 0.65f, 0.02f, 1},
-        new float[] {0.29f, 0.29f, 0.29f, 1},
-        4
+        new float[] {1.00f, 0.46f, 0.08f, 1},
+        new float[] {0.29f, 0.13f, 0.13f, 1},
+        5
 
     ),
 
